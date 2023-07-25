@@ -1,0 +1,745 @@
+<style>
+    :root {
+        --border-color: #f1f1f1; /* Color de los bordes */
+        --text-color-main: #f1f1f1;  /* Color del texto */
+        --bg-color: #212121; /* Color de fondo */
+        --button-bg-color-main: rgba(210 210 210 / 25%); /* Color de fondo de boton principal */
+        --button-bg-color-alt: rgba(255,255,255,0.1);   /* Color de fondo de boton alternativo */
+        --border-radius: 0.7rem; /* Radio de borde*/
+        --border-main: 0.1rem solid var(--border-color); /* Borde solido con color de --border-color */
+        
+        --table-color: rgba(210 210 210 / 5%); /**/
+        --spacing-main: 0.7rem; /**/
+    }
+
+    /* === CLASES GLOBALES === */
+    /* Contenedor flex */
+    .flex-container {
+        display: flex;
+    }
+    /* Contenedor flex-inline */
+    .flex--inline-container {
+        display: inline-flex;
+    }
+    /* Contenedor grid */
+    .grid-container {
+        display: grid;
+    }
+    /* Establece el color de fondo del elemento */
+    .bg-color {
+        background-color: var(--bg-color);
+    }
+    /* Padding completo al contenedor */
+    .padded-container {
+        padding: var(--spacing-main);
+    }
+    /* Padding vertical */
+    .padded-container--y {
+        padding-top: var(--spacing-main);
+        padding-bottom: var(--spacing-main);
+    }
+    /* Padding horizontal */
+    .padded-container--x {
+        padding-left: var(--spacing-main);
+        padding-right: var(--spacing-main);
+    }
+    /* Borde completo del contenedor */
+    .boder-main {
+        border: var(--border-main);
+    }
+    /*----------*/
+    /* Borde superior */
+    .border-main--top {
+        border-top: var(--border-main);
+    }
+    /* Borde completo excepto el superior */
+    .border-main--except-top {
+        border-left: var(--border-main);
+        border-right: var(--border-main);
+        border-bottom: var(--border-main);
+    }
+    .border-main--except-bottom {
+        border-top: var(--border-main);
+        border-left: var(--border-main);
+        border-right: var(--border-main);
+    }
+    /* Borde inferior */
+    .border-main--bottom {
+        border-bottom: var(--border-main);
+    }
+    /*----------*/
+    /* Redondea todo el borde del contenedor */
+    .border-rounded {
+        border-radius: var(--border-radius);
+    }
+    /* Redondead la parte superior */
+    .border-rounded--top {
+        border-top-left-radius: var(--border-radius);
+        border-top-right-radius: var(--border-radius);
+    }
+    /* Redondea la parte inferior */
+    .border-rounded--bottom {
+        border-bottom-left-radius: var(--border-radius);
+        border-bottom-right-radius: var(--border-radius);
+    }
+    /* Redondea la parte izquierda */
+    .border-rounded--left {
+        border-top-left-radius: var(--border-radius);
+        border-bottom-left-radius: var(--border-radius);
+    }
+    /* Redondea la parte derecha */
+    .border-rounded--right {
+        border-top-right-radius: var(--border-radius);
+        border-bottom-right-radius: var(--border-radius);
+    }
+    /*
+        Título: Pestañas de información
+        Descripción: crea un artefacto capaz de cambiar de contenido al pulsar uno de los botones mediante pestañas.
+    */
+    /* Contenedor de las botones */
+    .tab__btn-container {
+        flex-flow: row nowrap !important;
+        border-top: var(--border-main);
+        border-left: var(--border-main);
+        border-right: var(--border-main);
+        border-top-left-radius: var(--border-radius);
+        border-top-right-radius: var(--border-radius);
+    }
+    /* Estilos de botones de pestañas */
+    .tab__btn {
+        padding: 0.3rem 0;
+        border-bottom: var(--border-main);
+        color: var(--text-color-main);
+        transition: background-color 0.3s ease;
+    }
+    /* Estilos para primer boton */
+    .tab__btn:first-child {
+        border-right: var(--border-main);
+    }
+    /* Estilos para ultimo boton */
+    .tab__btn:last-child {
+        border-left: var(--border-main);
+    }
+    /* Boton activo */
+    .tab__btn.tab__btn--active {
+        border-bottom: 0;
+    }
+    /* Boton inactivo */
+    .tab__btn:not(.tab__btn--active):hover {
+        background-color: var;
+    }
+    /* Contenedor de los paneles */
+    .tab__panels__container {
+        border-left: var(--border-main);
+        border-right: var(--border-main);
+        border-bottom: var(--border-main);
+        border-bottom-left-radius: var(--border-radius);
+        border-bottom-right-radius: var(--border-radius);
+        gap: 0.7rem;
+    }
+    /* Panel */
+    .tab__panel {
+        gap: 0.5rem;
+    }
+    /* Panel activo */
+    .tab__panel.tab__panel--active {
+        display: grid;
+    }
+    /* Panel inactivo */
+    .tab__panel:not(.tab__panel--active) {
+        display: none;
+    }
+    /*
+        Título: Botones
+        Descripción: Estilos para botones varios, en una sola fila, la cual no se divide.
+        Nota: para evitar conflictos con la plantilla se opto por evitar clases con button, o btn.
+    */
+    /* Contenedor de los botones */
+    .btn--custom {
+        display: flex;
+        flex-flow: row nowrap;
+        gap: 0.5rem;
+    }
+    /* Estilos de boton */
+    .btn--custom > * {
+        flex-basis: content;
+        text-align: center;
+        padding: 0.5rem 1rem;
+        border-radius: 0.5rem;
+        font-size: 0.9rem;
+        background-color: #048ABF;
+        color: black !important;
+        transition: background-color 0.1s ease;
+        -webkit-font-smoothing: subpixel-antialiased;
+    }
+    /* Estilos al pasar el cursor sobre el boton */
+    .btn--custom > *:hover {
+        scale: 105%;
+        transition: scale .5s ease;
+    }
+    /*
+        Titulo: Tablas
+        Descripción: Aplica estilos personalizados generales a las tablas
+    */
+    /* Contendor de la tabla */
+    .table-custom__container {
+        overflow-x: auto;
+        border: var(--border-main);
+        border-radius: var(--border-radius);
+    }
+    /* Contedor de las celdas */
+    .table-custom {
+        cursor: pointer;
+        width: 100%;
+    }
+    /* Aplica estilos a las filas excepto la ultima */
+    .table-custom tr:not(:last-child) {
+        border-bottom: var(--border-main);
+    }
+    /* Estilos cuando el cursor pasa sobre una fila */
+    .table-custom tr:hover {
+
+    }
+    /* Aplica estilos a las filas de forma interpolada */
+    .table-custom tr:nth-child(even) {
+        background-color: black;
+    }
+    /* Aplica estilos a la primera columna*/
+    .table-custom col:nth-child(1) {
+        min-width: fit-content;
+        width: 25%;
+        border-right: var(--border-main);
+    }
+    /* Aplica estilos a los titulos de las filas */
+    .table-custom th {
+        padding: 0.5rem !important;
+        white-space: nowrap;
+        font-size: 0.9rem;
+        text-align: center;
+        border: 0 !important;
+    }
+    /* Aplica estilos a cada celda */
+    .table-custom td {
+        padding: 0.5rem !important;
+        white-space: nowrap;
+        font-size: 0.9rem;
+        border: 0 !important;
+        color: #75B3EE;
+    }
+
+    /* === CLASES ESPECÍFICAS ===*/
+    /* Contenedor general */
+    .container-general {
+        gap: 0.5rem;
+    }
+    /* Estilos para los hijos del contender */
+    .container-general > * {
+        background-color: var(--bg-color);
+    }
+
+    /* Contenedor de cover y tablas de la parte superior*/
+    .cover-tabs__container {
+        gap: 1rem;                      /* Separación entre contenedores */
+        grid-template-columns: 100%;    /* Tamaño de columnas */
+    }
+    @media only screen and (min-width: 768px) {
+        .cover-tabs__container{
+            grid-template-columns: minmax(0, 35%) minmax(0, 65%);
+        }
+    }
+
+    /* == ESTILOS DE COVER Y ESTADO DE EMISIÓN == */
+    /* Contenedor */
+    .cover-status {
+        flex-flow: column nowrap;
+    }
+    /* Imagen */
+    .cover-status__image {
+        margin-bottom: 0 !important;
+    }
+    /* Texto de estado de emisión */
+    .cover-status__text {
+        display: block;
+        width: 100%;
+        padding: 1rem 1rem;
+        color: var(--text-color-main);
+        text-align: center;
+        border: var(--border-main);
+    }
+    /* == SINOPSIS == */
+    /* Contenedor */
+    #synopsis * {
+        color: var(--text-color-main);
+    }
+    /* Titulo de sinopsis */
+    .synopsis__title {
+        padding-bottom: 1rem;
+        border-bottom: 0.2rem solid var(--border-color);
+        text-align: center;
+    }
+    /* Contenido de texto de sinopsis */
+    .synopsis__text {
+        hyphens: none;
+    }
+    /*Botones de relacionados*/
+    .related {
+        display: flex;
+        flex-flow: row wrap;
+        gap: 0.5rem;
+    }
+    /* Botones en si */
+    .related >* {
+        flex-basis: 100%;
+        text-align: center;
+        padding: 1rem;
+        border-radius: var(--border-radius);
+        border: var(--border-main);
+        font-size: 0.9rem;
+        color: var(--text-color-main) !important;
+        transition: background-color 0.3s ease;
+    }
+    /* == Descargas == */
+    /* 
+        Título: Detail personalizado
+        Descrición: Crea un detail personalizado para mostrar enlaces en forma de botones
+    */
+    /* Contenedor del detail */
+    .detail{
+        gap: 0.3rem;
+    }
+    /* Estilos del boton y cuando esta inactivo */
+    .detail__btn{
+        padding: 1rem;
+        border-radius: 0.3rem;
+        border: 0.1rem solid #048ABF;
+        color: #048ABF;
+        transition: .3s ease;
+    }
+    /* Boton activo */
+    .detail__btn.detail__btn--active{
+        background-color: #048ABF;
+        color: black;
+    }
+    /* Panel */
+    .detail__panel{
+    }
+    /* Panel activo */
+    .detail__panel.detail__panel--active{
+        display: flex;
+    }
+    /* Panel inactivo */
+    .detail__panel:not(.detail__panel--active) {
+        display: none;
+    }
+    /* == CONTRASEÑA == */
+    /* 
+        Nombre: Boton de para copiar contraseña
+        Descripción: copia la contraseña al portapapeles del usuario
+    */
+    /* Contenedor de contraseña */
+    .copy-password {
+        flex-flow: row wrap;
+        justify-content: center;
+        align-items: center;
+    }
+    /* Título */
+    .copy-password__title {
+        flex-basis: 100%;
+        text-align: center;
+        color: var(--text-color-main);
+    }
+    /* Contenedor de texto y boton de constraseña */
+    .copy-password__content {
+    }
+    /* Texto a copiar */
+    .copy-password__text {
+        padding: 0.5rem calc(0.5rem / 2) 0.5rem 0.5rem;
+        border: 0.1rem solid var(--border-color);
+        border-right: calc(1px / 2) solid var(--border-color);
+        font-size: 0.8rem;
+        color: var(--text-color-main);
+    }
+    /* Botón */
+    .copy-password__button {
+        padding: 0.5rem 0.5rem 0.5rem calc(0.5rem / 2);
+        border: 0.1rem solid var(--button-background-color);                /**/
+        border-left: calc(1px / 2) solid var(--button-background-color);    /**/
+        font-size: 0.8rem;
+        color: var(--text-color-main);
+    }
+    /* Estilos para el boton cuando el cursor pasa sobre el */
+    .copy-password__button:hover{
+        background-color: var(--button-background-color); /**/
+    }
+
+</style>
+<!-- Contenedor general -->
+<div class="container-general grid-container">
+    <!-- Sección de estado de emisión, cover y tabla de información -->
+    <section class="cover-tabs__container grid-container padded-container border-main border-rounded">
+        <div class="cover-status flex-container">
+            <!-- Aquí es donde va la imagen de cover modifica el title con el tiutlo del anime y el src con el link de tu imagen -->
+            <img class="cover-status__image border-rounded" title="Nichijou" src="https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx10165-1j2Qn8wIIn5S.png">
+        </div>
+        <!-- Contenedor para que el script tabs() funcione -->
+        <div class="tabs-custom">
+            <!-- Contenedor de los botones -->
+            <div class="tab__btn-container flex-container">
+                <button class="tab__btn" data-panel-for="synopsis">Sinopsis</button>
+                <button class="tab__btn" data-panel-for="anime-info">Información</button>
+            </div>
+            <!-- Contenedor de los paneles -->
+            <div class="tab__panels__container padded-container grid-container">
+                <!-- Primer panel -->
+                <div id="synopsis" class="tab__panel">
+                    <h2 class="synopsis__title">
+                        SINOPSIS
+                    </h2>
+                    <p class="synopsis__text">
+                        Nichijou nos muestra las locuras cotidianas de tres amigas de la infancia que van al instituto: Mio Naganohara, Yuuko Aioi y Mai Minakami. Sus vidas se cruzan con las de la joven genio Hakase Shinonome, su robot Nano que cuida de ella y su gato parlante Sakamoto. En cada día, estos seis personajes y los que les rodean viven situaciones que van desde lo normal hasta lo absurdo. Ir al colegio, ser picado por un cuervo que habla, pasar tiempo con los amigos y ver al director hacer una suplex a un ciervo: todo eso forma parte del extraordinario día a día de los protagonistas de Nichijou.
+                    </p>
+                </div>
+                <!-- Segundo panel -->
+                <div id="anime-info" class="tab__panel">
+                    <div class="table-custom__container">
+                        <table class="table-custom">
+                            <tbody>
+                                <colgroup>
+                                    <col>
+                                    <col>
+                                </colgroup>
+                                <!-- Aqui van los datos de la tabla, al principio va una etiqueta <th> para los titulos de las filas. -->
+                                <tr>
+                                    <th>Año</th>
+                                    <td>2017</td>
+                                </tr>
+                                <tr>
+                                    <th>Duración</th>
+                                    <td>23 min aprox</td>
+                                </tr>
+                                <tr>
+                                    <th>Episodios</th>
+                                    <td>12 + 1 OVA</td>
+                                </tr>
+                                <tr>
+                                    <th>Estudio</th>
+                                    <td>SILVER LINK, Connect</td>
+                                </tr>
+                                <tr>
+                                    <th>Fuente</th>
+                                    <td>BDrip</td>
+                                </tr>
+                                <tr>
+                                    <th>Idioma</th>
+                                    <td>Japonés</td>
+                                </tr>
+                                <tr>
+                                    <th>Temporada</th>
+                                    <td>1</td>
+                                </tr>
+                                <tr>
+                                    <th>Tipo</th>
+                                    <td>TV</td>
+                                </tr>
+                                <tr>
+                                    <th>Título</th>
+                                    <td>Busou Shoujo Machiavellianism</td>
+                                </tr>
+                                <tr>
+                                    <th>Subtítulos</th>
+                                    <td>Español Latino</td>
+                                </tr>                                
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <span class="cover-status__text border-rounded">En emisión</span>
+            </div>
+        </div>
+    </section>
+    <!-- Sección de botones de relacionados -->
+    <!-- En caso de haber relacionados, sino borra toda la etiqueta section y lo que esta en ella -->
+    <section class="related padded-container border-rounded">
+        <!-- En href va el link -->
+        <a target="_blank" href="">
+            <i class="fa-regular fa-square-check"></i>
+            <!-- Aqui va el nombre que lleva el botón -->
+            Prueba de relacionados 1
+        </a>
+        <a target="_blank" href="">
+            <i class="fa-regular fa-square-check"></i>
+            Prueba de relacionados 2
+        </a>
+    </section>
+    <!-- Sección de botones varios -->
+    <!-- En caso de haber, si no, borrala-->
+    <section class="others btn--custom padded-container border-rounded">
+        <a target="_blank" href="">
+            <i class="fa-brands fa-youtube"></i>
+            Trailer
+        </a>
+        <a target="_blank" href="">
+            <i class="fa-solid fa-tv"></i>
+            Crunchyroll
+        </a>
+    </section>
+    <!-- Sección de descarga e info -->
+    <section class="grid-container padded-container border-rounded">
+        <!-- Contenedor para que el script tabs() funcione -->
+        <div class="tabs-custom">
+            <!-- Contenedor de los botones -->
+            <div class="tab__btn-container flex-container">
+                <button class="tab__btn"  data-panel-for="download--1">720P SD</button>       <!-- Nombre de la calidad dentro de la etiqueta -->
+                <button class="tab__btn"  data-panel-for="download--2">1080P FULL HD</button> <!-- Nombre de la calidad dentro de la etiqueta -->
+            </div>
+            <!-- Contenedor de los paneles -->
+            <div class="tab__panels__container padded-container">
+                <!-- Primer panel-->
+                <div id="download--1" class="tab__panel">
+                    <div class="table-custom__container">
+                        <table class="table-custom">
+                            <tbody>
+                                <colgroup>
+                                    <col>
+                                    <col>
+                                </colgroup>
+                                <tr>
+                                    <th>Codificado:</th>
+                                    <td>Nookcir DOM</td>
+                                </tr>
+                                <tr>
+                                    <th>Calidad:</th>
+                                    <td>Muy Buena!</td>
+                                </tr>
+                                <tr>
+                                    <th>Formato:</th>
+                                    <td>MP4</td>
+                                </tr>
+                                <tr>
+                                    <th>Resolución:</th>
+                                    <td>1280 × 720</td>
+                                </tr>
+                                <tr>
+                                    <th>Peso × Ep:</th>
+                                    <td>116MB</td>
+                                </tr>
+                                <tr>
+                                    <th>Codec:</th>
+                                    <td>x264</td>
+                                </tr>
+                                <tr>
+                                    <th>Comprimido:</th>
+                                    <td>SI (.rar)</td>
+                                </tr>
+                                <tr>
+                                    <th>Servidores:</th>
+                                    <td>Mediafire</td>
+                                </tr>
+                                <tr>
+                                    <th>Subido por:</th>
+                                    <td>AnimeySeriesDO</td>
+                                </tr>                                
+                            </tbody >
+                        </table>
+                    </div>
+                    <!-- Detail de links de descarga -->
+                    <div class="detail grid-container">
+                        <button class="detail__btn" data-panel-for="links--1">Mostrar enlaces</button>
+                        <div id="links--1" class="detail__panel btn--custom">
+                            <!--En href va tu link pana, y el nombre del servidor va dentro de la etiqueta -->
+                            <a href="#">Mega</a>
+                            <a href="#">Mediafire</a>
+                            <a href="#">Fireload</a>
+                        </div>
+                    </div>
+                </div>
+                <!-- Segundo panel-->
+                <div id="download--2" class="tab__panel">
+                    <div class="table-custom__container">
+                        <table class="table-custom">
+                            <tbody>
+                                <colgroup>
+                                    <col>
+                                    <col>
+                                </colgroup>
+                                <tr>
+                                    <th>Montaje</th>
+                                    <td>Nookcir DOM</td>
+                                </tr>
+                                <tr>
+                                    <th>Codificado</th>
+                                    <td>NC-Raws, 神樂坂 まひろ, LoliHouse (Entre otro)</td>
+                                </tr>
+                                <tr>
+                                    <th>Calidad</th>
+                                    <td>Excelente</td>
+                                </tr>
+                                <tr>
+                                    <th>Formato</th>
+                                    <td>MKV</td>
+                                </tr>
+                                <tr>
+                                    <th>Resolución</th>
+                                    <td>1920x1080</td>
+                                </tr>
+                                <tr>
+                                    <th>Peso × Ep</th>
+                                    <td>220MB~ | 1,2GB Ep.5</td>
+                                </tr>
+                                <tr>
+                                    <th>Codec</th>
+                                    <td>x265 | x264 Ep.5</td>
+                                </tr>
+                                <tr>
+                                    <th>Comprimido</th>
+                                    <td>NO</td>
+                                </tr>
+                                <tr>
+                                    <th>Servidores</th>
+                                    <td>Mediafire</td>
+                                </tr>
+                                <tr>
+                                    <th>Subido por</th>
+                                    <td>AnimeySeriesDO</td>
+                                </tr>                                
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="copy-password flex-container">
+            <span class="copy-password__title">Contraseña: </span>
+            <div class="copy-passord__content flex--inline-container">
+                <span id="pass" class="copy-password__text border-rounded--left">AnimeySeriesDO</span>
+                <button id="pass-button" class="copy-password__button border-rounded--right">Copiar<i class="fa-regular fa-clipboard"></i></button>
+            </div>
+        </div>
+    </section>
+</div>
+
+<script>
+    /* Script de pestañas */
+
+    function tabs(container){
+        
+        // Declaramos las clases que van a tener los elementos activos
+        let buttonClassActive = "tab__btn--active";
+        let panelClassActive = "tab__panel--active";
+
+        // Seleccionamos todos los contenedors de pestañas con la clase dada en el argumento
+        let tabsContainers = document.querySelectorAll(container);
+
+        //  Recorremos cada contenedor de pestañas
+        tabsContainers.forEach((tabContainer) => {
+            // Seleccionamos los contenedores de los botones y paneles
+            let buttonsContainer = tabContainer.querySelector(".tab__btn-container");
+            let panelsContainer = tabContainer.querySelector(".tab__panels__container");
+
+            // Seleccionamos todos los elementos dentro de los elementos mediante sus clases
+            let buttons = buttonsContainer.querySelectorAll(".tab__btn");
+            let panels = panelsContainer.querySelectorAll(".tab__panel");
+
+            // Recorremos cada boton
+            buttons.forEach((button) => {
+
+                // Establece un flex-basis del 100% divido entre el numero de botones, para cada boton.
+                let numButtons = buttons.length; // Obtiene el número de botones.
+                button.style.flexBasis = `calc(100% / ${numButtons})`;
+
+                // Establece un escucha de vento click en cada boton, cuando se hace click se ejecuta la función.
+                button.addEventListener("click", () => {
+                    console.log("Click leído"); // Para fines de depuración solamente
+
+                    // Quita la clase activa a todos los botones
+                    buttons.forEach((btn) => {
+                        btn.classList.remove(buttonClassActive);
+                    })
+                    // Quita la clase activa a todos los paneles
+                    panels.forEach((panel) => {
+                        panel.classList.remove(panelClassActive);
+                    })
+                    // Añade la clase activa al boton clickeado
+                    button.classList.add(buttonClassActive);
+
+                    // Lee el atributo data-panel-for del boton y lo guarda
+                    let forPanel = button.getAttribute("data-panel-for");
+
+                    // Selecciona el panel actual mediante el atributo
+                    let currentPanel = panelsContainer.querySelector("#" + forPanel);
+
+                    // Añade la clase activa al panel actual
+                    currentPanel.classList.add(panelClassActive);
+                })
+            })
+
+            // Selecciona el primer boton al cargar la página
+            buttons[0].dispatchEvent(new Event("click"));
+        })
+    }
+    // Inicializa tabs() pasando como argumento la clase del contenedor.
+    tabs(".tabs-custom");
+
+    /* Script de detail */
+    // Inicializa detail() pasando como argumento la clase del contenedor.
+    function detail(container) {
+        // Declaramos las clases que van a tener los elementos activos
+        let buttonClassActive = "detail__btn--active"
+        let panelClassActive = "detail__panel--active"
+        detailsContainers = document.querySelectorAll(container);
+
+        // Recorremos cada contenedor de details
+        detailsContainers.forEach((detailContainer) => {
+            buttons = detailContainer.querySelectorAll(".detail__btn");
+            panels = detailContainer.querySelectorAll(".detail__panel");
+
+            // Recorremos cada boton
+            buttons.forEach((button) => {
+
+                // Establece un escucha de vento click en cada boton, cuando se hace click se ejecuta la función.
+                button.addEventListener("click", () => {
+
+                    // Conmutamos la clase activa en el boton
+                    button.classList.toggle(buttonClassActive);
+
+                    // Lee el atributo data-panel-for del boton y lo guarda
+                    let forPanel = button.getAttribute("data-panel-for");
+
+                    // Selecciona el panel actual mediante el atributo
+                    let currentPanel = detailContainer.querySelector("#" + forPanel);
+
+                    // Conmuta la clase activa en el panel
+                    currentPanel.classList.toggle(panelClassActive);
+                })
+            })
+        })
+    }
+    detail(".detail");
+
+    /* Script para copiar contraseña */
+    (function copyText() {
+        // Obtenemos el elemento que tiene el texto a copiar
+        let copyContainers = document.querySelectorAll("copy-passord__content");
+        copyContainers.forEach((container) => {
+            let text = document.querySelector("#pass");
+            let button = document.querySelector("#pass-button")
+            // Agrega un escucha de eventos al boton
+            button.addEventListener("click", () => {
+                // Hace una selección de texto dentro del contenedor
+                let textRange = document.createRange();
+                textRange.selectNodeContents(text);
+    
+                // Limpia y luego agrega el texto al portapapeles
+                window.getSelection().removeAllRanges();
+                window.getSelection().addRange(textRange);
+                document.execCommand("copy");
+    
+                // Limpia el portapapeles
+                window.getSelection().removeAllRanges();
+    
+                // Muestra una notificación
+                alert("Texto copiado: " + text.textContent);
+            });
+        });
+    }) ();
+</script>
